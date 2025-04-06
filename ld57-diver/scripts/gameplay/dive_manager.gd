@@ -31,4 +31,4 @@ func _process(delta):
 		
 		await tween.finished
 		
-		GameStateManager.die()
+		GameStateManager.finish(int(air_level * 100))
