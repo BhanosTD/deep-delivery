@@ -1,0 +1,63 @@
+[gd_scene load_steps=6 format=3 uid="uid://ib4ym0i3kd2a"]
+
+[ext_resource type="Script" uid="uid://da33uu5jpf3n6" path="res://entities/angler_fish/fish_controller.gd" id="1_3dr0b"]
+[ext_resource type="PackedScene" uid="uid://mpmc48u4w0sw" path="res://entities/angler_fish/angler_fish.glb" id="1_7ojrk"]
+[ext_resource type="Script" uid="uid://7y1c60pe3jvp" path="res://scripts/graphics/keep_upper.gd" id="3_11xtn"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_11xtn"]
+radius = 1.33439
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3dr0b"]
+radius = 1.32532
+
+[node name="AnglerFish" type="CharacterBody3D" node_paths=PackedStringArray("animation_player")]
+motion_mode = 1
+script = ExtResource("1_3dr0b")
+animation_player = NodePath("GraphicsRoot/InnerRotator/Fish2/AnimationPlayer")
+
+[node name="GraphicsRoot" type="Node3D" parent="."]
+
+[node name="KillArea" type="Area3D" parent="GraphicsRoot"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.28682, -0.275621, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GraphicsRoot/KillArea"]
+shape = SubResource("SphereShape3D_11xtn")
+debug_color = Color(0.7, 0, 0, 0.419608)
+
+[node name="InnerRotator" type="Node3D" parent="GraphicsRoot"]
+script = ExtResource("3_11xtn")
+
+[node name="Fish2" parent="GraphicsRoot/InnerRotator" instance=ExtResource("1_7ojrk")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Skeleton3D" parent="GraphicsRoot/InnerRotator/Fish2/Fish" index="0"]
+bones/1/position = Vector3(-9.00324e-17, -0.0131033, -0.197875)
+bones/1/rotation = Quaternion(0.999022, -0.037361, -0.000883663, 0.023629)
+bones/2/rotation = Quaternion(0.0236425, -0.000374236, 0.0158175, 0.999595)
+bones/3/rotation = Quaternion(0.010985, 0.000210509, 0.0191586, 0.999756)
+bones/4/rotation = Quaternion(0.116693, -0.000144326, -0.00119858, 0.993167)
+bones/5/rotation = Quaternion(-0.233596, -0.000362249, 0.000590014, 0.972333)
+bones/6/rotation = Quaternion(0.0236202, -0.00109296, 0.0462084, 0.998652)
+bones/7/rotation = Quaternion(0.0236298, -0.000860428, 0.0363747, 0.999058)
+bones/8/position = Vector3(-9.16229e-17, -0.0130568, -0.197876)
+bones/8/rotation = Quaternion(0.0152855, 0.000464135, 0.0303468, 0.999422)
+bones/9/position = Vector3(7.95668e-09, 2.57224, -1.7148)
+bones/9/rotation = Quaternion(0.444431, 0.0186619, 0.0348599, 0.89494)
+bones/10/position = Vector3(-2.90874e-09, 2.40525, -1.35908)
+bones/10/rotation = Quaternion(0.815105, 1.38691e-07, 1.95047e-07, 0.579313)
+bones/11/rotation = Quaternion(0.558273, -0.000701016, 0.000489944, 0.829657)
+bones/12/rotation = Quaternion(-0.209521, -0.00108215, 0.00151072, 0.977802)
+bones/13/rotation = Quaternion(-0.216677, -0.00202142, 0.00101205, 0.976241)
+
+[node name="AnimationPlayer" parent="GraphicsRoot/InnerRotator/Fish2" index="1"]
+playback_auto_capture_transition_type = 5
+playback_auto_capture_ease_type = 1
+playback_default_blend_time = 0.8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_3dr0b")
+
+[editable path="GraphicsRoot/InnerRotator/Fish2"]

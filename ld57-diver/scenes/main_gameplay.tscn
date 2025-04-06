@@ -1,0 +1,166 @@
+[gd_scene load_steps=23 format=3 uid="uid://b8a8mnvh4oksu"]
+
+[ext_resource type="Shader" uid="uid://btgqnhcmt2as6" path="res://graphics/background/background_shader.gdshader" id="1_7lkci"]
+[ext_resource type="PackedScene" uid="uid://j2w7bbvfakxo" path="res://entities/player/player.tscn" id="2_l2koq"]
+[ext_resource type="Script" uid="uid://da6n6eh7ybglr" path="res://scripts/graphics/environment_manager.gd" id="2_o6k8n"]
+[ext_resource type="Script" uid="uid://ds480nn10fjky" path="res://entities/player/camera_controller.gd" id="2_ps0gl"]
+[ext_resource type="Script" uid="uid://d1ximc6vqju0j" path="res://scripts/gameplay/dive_manager.gd" id="3_l2koq"]
+[ext_resource type="Script" uid="uid://dgieufsa5rf82" path="res://scripts/gui/gui_manager.gd" id="5_ym77j"]
+[ext_resource type="Script" uid="uid://hn6eehxq05ao" path="res://scripts/gameplay/spawner.gd" id="6_4658i"]
+[ext_resource type="PackedScene" uid="uid://ib4ym0i3kd2a" path="res://entities/angler_fish/angler_fish.tscn" id="7_6b6ep"]
+[ext_resource type="AudioStream" uid="uid://bskist3mb8dy2" path="res://sounds/Breathless.ogg" id="8_6bhco"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ps0gl"]
+shader = ExtResource("1_7lkci")
+shader_parameter/topColor = Color(0.284782, 0.863411, 0.819605, 1)
+shader_parameter/botColor = Color(0.000342607, 0.123256, 0.285265, 1)
+
+[sub_resource type="Sky" id="Sky_ym77j"]
+sky_material = SubResource("ShaderMaterial_ps0gl")
+
+[sub_resource type="Environment" id="Environment_o6k8n"]
+background_mode = 2
+background_color = Color(0.0326501, 0.181345, 0.19863, 1)
+sky = SubResource("Sky_ym77j")
+tonemap_mode = 4
+tonemap_exposure = 0.5
+glow_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_o6k8n"]
+offsets = PackedFloat32Array(0, 0.492308, 1)
+colors = PackedColorArray(0.286275, 0.862745, 0.819608, 1, 0, 0.121569, 0.286275, 1, 0, 0.0773985, 0.151772, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6b6ep"]
+gradient = SubResource("Gradient_o6k8n")
+
+[sub_resource type="Curve" id="Curve_ps0gl"]
+_data = [Vector2(0, 0), 0.0, 8.94944, 0, 0, Vector2(0.282486, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.41138, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ym77j"]
+curve = SubResource("Curve_ps0gl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ps0gl"]
+emission_shape = 3
+emission_box_extents = Vector3(20, 15, 8)
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_ym77j")
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_ps0gl"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.415686)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ym77j"]
+material = SubResource("ORMMaterial3D_ps0gl")
+size = Vector2(0.2, 0.2)
+
+[sub_resource type="Gradient" id="Gradient_l2koq"]
+offsets = PackedFloat32Array(0, 0.989744)
+colors = PackedColorArray(0, 0.054902, 0.12549, 0, 0, 0.054902, 0.12549, 0.647059)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ps0gl"]
+gradient = SubResource("Gradient_l2koq")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ps0gl"]
+font_size = 32
+
+[node name="MainGameplay" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." node_paths=PackedStringArray("dive_manager", "dir_light")]
+environment = SubResource("Environment_o6k8n")
+script = ExtResource("2_o6k8n")
+dive_manager = NodePath("../DiveManager")
+background_mat = SubResource("ShaderMaterial_ps0gl")
+background_gradient = SubResource("GradientTexture1D_6b6ep")
+background_color_top = Color(0.286275, 0.862745, 0.819608, 1)
+background_color_bot = Color(6.01634e-08, 0.0939663, 0.232924, 1)
+dir_light = NodePath("../DirectionalLight3D")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+script = ExtResource("2_ps0gl")
+player = NodePath("../Player")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+amount = 256
+lifetime = 5.0
+process_material = SubResource("ParticleProcessMaterial_ps0gl")
+draw_pass_1 = SubResource("QuadMesh_ym77j")
+
+[node name="Player" parent="." node_paths=PackedStringArray("dive_manager") instance=ExtResource("2_l2koq")]
+dive_manager = NodePath("../DiveManager")
+
+[node name="DiveManager" type="Node" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("3_l2koq")
+player = NodePath("../Player")
+
+[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("dive_manager")]
+script = ExtResource("6_4658i")
+enemies = Array[PackedScene]([ExtResource("7_6b6ep")])
+dive_manager = NodePath("../DiveManager")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 0, 0)
+light_color = Color(0.324634, 0.968616, 1, 1)
+light_energy = 0.25
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GUIManager" type="Node" parent="GUI" node_paths=PackedStringArray("dive_manager")]
+script = ExtResource("5_ym77j")
+dive_manager = NodePath("../../DiveManager")
+
+[node name="Vignette" type="TextureRect" parent="GUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ps0gl")
+
+[node name="DepthLabel" type="Label" parent="GUI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+text = "1 m"
+label_settings = SubResource("LabelSettings_ps0gl")
+horizontal_alignment = 1
+
+[node name="AirBar" type="ProgressBar" parent="GUI"]
+self_modulate = Color(2.31028e-06, 0.637594, 0.906217, 1)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 5.0
+offset_top = -100.0
+offset_right = 20.0
+offset_bottom = 100.0
+grow_vertical = 2
+max_value = 1.0
+step = 0.005
+value = 1.0
+fill_mode = 3
+show_percentage = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_6bhco")
+autoplay = true
+
+[connection signal="player_flipped" from="DiveManager" to="Spawner" method="_on_dive_manager_player_flipped"]
