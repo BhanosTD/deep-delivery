@@ -54,18 +54,18 @@ albedo_color = Color(1, 1, 1, 0.415686)
 material = SubResource("ORMMaterial3D_ps0gl")
 size = Vector2(0.2, 0.2)
 
-[sub_resource type="Gradient" id="Gradient_l2koq"]
+[sub_resource type="Gradient" id="Gradient_4658i"]
 offsets = PackedFloat32Array(0, 0.989744)
 colors = PackedColorArray(0, 0.054902, 0.12549, 0, 0, 0.054902, 0.12549, 0.647059)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ps0gl"]
-gradient = SubResource("Gradient_l2koq")
+gradient = SubResource("Gradient_4658i")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ps0gl"]
-font_size = 32
+font_size = 36
 
 [node name="MainGameplay" type="Node3D"]
 
@@ -135,8 +135,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -100.0
+offset_top = 10.0
 offset_right = 100.0
-offset_bottom = 100.0
+offset_bottom = 110.0
 grow_horizontal = 2
 text = "1 m"
 label_settings = SubResource("LabelSettings_ps0gl")

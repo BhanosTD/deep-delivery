@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1hm6equi5bav"]
+
+[ext_resource type="Script" uid="uid://rk2dbxbk5oi" path="res://scripts/gameplay/game_state_manager.gd" id="1_4hkbw"]
+
+[node name="GameStateManager" type="Control" node_paths=PackedStringArray("transition_cover")]
+z_index = 100
+z_as_relative = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4hkbw")
+transition_cover = NodePath("ColorRect")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 684.0
+offset_bottom = 684.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

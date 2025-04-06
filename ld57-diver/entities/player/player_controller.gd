@@ -6,6 +6,8 @@ var camera: Camera3D
 @export var dive_manager: DiveManager
 var flip_stage: int = 0
 
+var flip_cooldown = 0.0
+
 func get_world_mouse_pos() -> Vector3:
 	var mouse_pos: Vector2 = camera.get_viewport().get_mouse_position()
 	
@@ -27,10 +29,11 @@ func _physics_process(delta):
 	
 	var has_flipped: bool = false
 	
-	if Input.is_action_just_pressed("gameplay_flip_" + str(flip_stage + 1)):
+	if Input.is_action_just_pressed("gameplay_flip_" + str(flip_stage + 1)) && flip_cooldown < 0:
 		has_flipped = true
 		flip_stage += 1
 		flip_stage = flip_stage % 2 
+		flip_cooldown = 0.2
 	
 	if has_flipped:
 		velocity += 10 * Vector3(get_world_mouse_pos().x - position.x, get_world_mouse_pos().y - position.y, 0).normalized()
@@ -38,9 +41,13 @@ func _physics_process(delta):
 	
 	position.y -= delta
 	
+	position.y = min(0, position.y)
+	
+	flip_cooldown -= delta
+	
 	move_and_slide()
 
 func die():
 	hide()
 	await get_tree().create_timer(1).timeout
-	get_tree().quit()
+	GameStateManager.die()

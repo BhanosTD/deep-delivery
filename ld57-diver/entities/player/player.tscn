@@ -4,19 +4,25 @@
 [ext_resource type="Script" uid="uid://7y1c60pe3jvp" path="res://scripts/graphics/keep_upper.gd" id="2_abrql"]
 [ext_resource type="PackedScene" uid="uid://cqwne30bb5bhd" path="res://entities/player/assets/diver.glb" id="3_sglur"]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sglur"]
+radius = 0.15
+height = 1.8
+
 [sub_resource type="BoxMesh" id="BoxMesh_sfv1e"]
 size = Vector3(0.2, 1.6, 0.4)
 
 [sub_resource type="BoxMesh" id="BoxMesh_symyc"]
 size = Vector3(0.25, 0.3, 0.2)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_symyc"]
-
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 3
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_symyc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.263685, 0, 0)
+shape = SubResource("CapsuleShape3D_sglur")
 
 [node name="GraphicsRoot" type="Node3D" parent="."]
 
@@ -37,6 +43,3 @@ transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.4893
 visible = false
 mesh = SubResource("BoxMesh_symyc")
 skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_symyc")

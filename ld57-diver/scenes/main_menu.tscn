@@ -1,0 +1,186 @@
+[gd_scene load_steps=18 format=3 uid="uid://w121ex5u488e"]
+
+[ext_resource type="Script" uid="uid://c70e85hfprk6p" path="res://scripts/gameplay/main_menu_manager.gd" id="1_bqqt6"]
+[ext_resource type="Shader" uid="uid://bbbhibt5geydf" path="res://graphics/menu/water_waves.gdshader" id="1_l6cm7"]
+[ext_resource type="PackedScene" uid="uid://176qv2r73ls8" path="res://graphics/menu/Title.glb" id="2_ekxnf"]
+[ext_resource type="Script" uid="uid://ck7sfc57fqm8x" path="res://scripts/graphics/wave_waggler.gd" id="3_wu84c"]
+[ext_resource type="AudioStream" uid="uid://d1yf2ad6y7neh" path="res://scripts/gui/wind1_looping.ogg" id="5_8ln24"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vue75"]
+sky_top_color = Color(0.0798347, 0.0895748, 0.103197, 1)
+sky_curve = 0.243676
+ground_bottom_color = Color(0.133333, 0.490196, 0.556863, 1)
+ground_horizon_color = Color(0.0588235, 0.415686, 0.505882, 1)
+ground_curve = 0.278576
+sun_angle_max = 47.82
+sun_curve = 0.454714
+
+[sub_resource type="Sky" id="Sky_l6cm7"]
+sky_material = SubResource("ProceduralSkyMaterial_vue75")
+
+[sub_resource type="Environment" id="Environment_ekxnf"]
+background_mode = 2
+background_energy_multiplier = 0.72
+sky = SubResource("Sky_l6cm7")
+tonemap_mode = 4
+tonemap_exposure = 2.11
+fog_enabled = true
+fog_light_color = Color(0.272, 0.2904, 0.32, 1)
+fog_sky_affect = 0.83
+adjustment_enabled = true
+adjustment_contrast = 1.63
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_l6cm7"]
+fractal_weighted_strength = 0.18
+domain_warp_enabled = true
+domain_warp_fractal_gain = -0.117
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ekxnf"]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_l6cm7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ekxnf"]
+render_priority = 0
+shader = ExtResource("1_l6cm7")
+shader_parameter/waterColor = Color(0.4717, 0.528057, 0.53, 1)
+shader_parameter/waterColorBot = Color(0.2028, 0.3276, 0.39, 1)
+shader_parameter/noise1 = SubResource("NoiseTexture2D_ekxnf")
+shader_parameter/noise1Normal = SubResource("NoiseTexture2D_ekxnf")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_vue75"]
+material = SubResource("ShaderMaterial_ekxnf")
+size = Vector2(64, 64)
+subdivide_width = 128
+subdivide_depth = 128
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wu84c"]
+fractal_octaves = 2
+
+[sub_resource type="Gradient" id="Gradient_l2koq"]
+offsets = PackedFloat32Array(0, 0.989744)
+colors = PackedColorArray(0, 0.054902, 0.12549, 0, 0, 0.054902, 0.12549, 0.647059)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_l6cm7"]
+gradient = SubResource("Gradient_l2koq")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bqqt6"]
+font_size = 36
+
+[sub_resource type="LabelSettings" id="LabelSettings_wu84c"]
+font_size = 21
+
+[node name="MainMenu" type="Node3D"]
+script = ExtResource("1_bqqt6")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ekxnf")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(0.199522, -0.975893, 0.088449, 0.932424, 0.161328, -0.323357, 0.301292, 0.146989, 0.942134, 0.195052, 4.63926, 2.76089)
+light_color = Color(0.725786, 0.735286, 0.640203, 1)
+light_energy = 3.806
+spot_range = 42.214
+spot_angle_attenuation = 0.0490365
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="."]
+transform = Transform3D(0.351945, -0.60841, 0.711317, 0.932424, 0.161328, -0.323357, 0.0819784, 0.777053, 0.624074, 7.07683, 4.63926, 0.407784)
+light_color = Color(0, 0.643523, 0.767365, 1)
+light_energy = 3.806
+spot_range = 42.214
+spot_angle_attenuation = 0.0490365
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.864767, 0.0391181, -0.500647, 0.242063, -0.905963, 0.347328, -0.439981, -0.421546, -0.792916, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.790882, 1.90735e-06, -30.4537)
+mesh = SubResource("PlaneMesh_vue75")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.999997, 8.73113e-11, -0.00226893, -0.000374114, 0.986313, -0.164886, 0.00223787, 0.164886, 0.98631, 0.603125, 0.516042, 1.50472)
+fov = 65.0
+script = ExtResource("3_wu84c")
+noise = SubResource("FastNoiseLite_wu84c")
+strength = 0.3
+speed = 10.0
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Vignette" type="TextureRect" parent="GUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_l6cm7")
+
+[node name="Label" type="Label" parent="GUI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -182.0
+offset_top = -47.0
+offset_right = 182.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press [SPACE] to start"
+label_settings = SubResource("LabelSettings_bqqt6")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="GUI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -182.0
+offset_top = -97.0
+offset_right = 182.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "[A]<->[D] to swim"
+label_settings = SubResource("LabelSettings_bqqt6")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="GUI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -107.0
+offset_right = 374.0
+offset_bottom = -10.0
+grow_vertical = 0
+text = "Your friend just went 600 m down in a submarine and it broke down, get down there in time before your air runs out."
+label_settings = SubResource("LabelSettings_wu84c")
+vertical_alignment = 2
+autowrap_mode = 2
+
+[node name="Title" parent="." instance=ExtResource("2_ekxnf")]
+transform = Transform3D(1.48905, 0.200237, 0.156902, 0.222599, -0.57461, -1.37923, -0.123138, 1.38265, -0.59591, 0.780958, 3.66314, -3.63452)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_8ln24")
+autoplay = true
+parameters/looping = true
