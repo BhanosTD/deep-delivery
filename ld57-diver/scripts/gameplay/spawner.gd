@@ -3,6 +3,9 @@ extends Node
 @export var enemies: Array[PackedScene]
 @export var dive_manager: DiveManager
 
+func _ready():
+	enemies[0].instantiate()
+
 func spawn():
 	var spawn_angle = randf_range(PI + 0.3, 2*PI - 0.3)
 	

@@ -87,14 +87,14 @@ script = ExtResource("1_bqqt6")
 environment = SubResource("Environment_ekxnf")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(0.199522, -0.975893, 0.088449, 0.932424, 0.161328, -0.323357, 0.301292, 0.146989, 0.942134, 0.195052, 4.63926, 2.76089)
+transform = Transform3D(0.199522, -0.975893, 0.0884492, 0.932424, 0.161327, -0.323356, 0.301292, 0.146989, 0.942135, 0.195052, 4.63926, 2.76089)
 light_color = Color(0.725786, 0.735286, 0.640203, 1)
 light_energy = 3.806
 spot_range = 42.214
 spot_angle_attenuation = 0.0490365
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="."]
-transform = Transform3D(0.351945, -0.60841, 0.711317, 0.932424, 0.161328, -0.323357, 0.0819784, 0.777053, 0.624074, 7.07683, 4.63926, 0.407784)
+transform = Transform3D(0.351945, -0.60841, 0.711317, 0.932424, 0.161327, -0.323356, 0.0819784, 0.777053, 0.624074, 7.07683, 4.63926, 0.407784)
 light_color = Color(0, 0.643523, 0.767365, 1)
 light_energy = 3.806
 spot_range = 42.214

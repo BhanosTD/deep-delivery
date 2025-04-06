@@ -19,18 +19,23 @@ func _ready():
 	graphicsRoot = $GraphicsRoot
 	camera = $"../Camera3D"
 	
+	$GraphicsRoot/InnerRotator/Diver/AnimationPlayer.play("Flip2")
 	
 
 func _process(delta):
 	rotation.z = atan2(get_world_mouse_pos().y - position.y, get_world_mouse_pos().x - position.x)
 
 func _physics_process(delta):
+	if dive_manager.has_ended || !visible:
+		return
+	
 	velocity *= 0.96
 	
 	var has_flipped: bool = false
 	
 	if Input.is_action_just_pressed("gameplay_flip_" + str(flip_stage + 1)) && flip_cooldown < 0:
 		has_flipped = true
+		$GraphicsRoot/InnerRotator/Diver/AnimationPlayer.play("Flip" + str(flip_stage + 1))
 		flip_stage += 1
 		flip_stage = flip_stage % 2 
 		flip_cooldown = 0.2
